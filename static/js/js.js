@@ -1,8 +1,21 @@
 function main() {
+    var pageNumber = 1;
+
+    fetchData(pageNumber);
+
+    $('#next').on('click', function() {
+        pageNumber++;
+        console.log(pageNumber);
+        $('tbody').empty(); 
+        fetchData(pageNumber);
+    });
+}
+
+function fetchData(page) {
     $.ajax({
         type: 'GET',
         dataType: 'json',
-        url: 'http://swapi.co/api/planets/',
+        url: 'http://swapi.co/api/planets/?page=' + page,
         success: function(response) {
             console.log(response.count);
             console.log(response.next);
