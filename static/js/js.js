@@ -1,24 +1,21 @@
 function main() {
     var pageNumber = 1;
-
-    fetchData(pageNumber);
+    handlePlanets(pageNumber);
 
     $('#next').on('click', function() {
         pageNumber++;
         console.log(pageNumber);
-        $('tbody').empty(); 
-        var result = fetchData(pageNumber);
+        $('#planets').empty(); 
     });
 
     $('#previous').on('click', function() {
         pageNumber--;
         console.log(pageNumber);
-        $('tbody').empty(); 
-        var result = fetchData(pageNumber);
+        $('#planets').empty(); 
     });
 }
 
-function fetchData(page) {
+function handlePlanets(page) {
     $.ajax({
         type: 'GET',
         dataType: 'json',
@@ -30,7 +27,7 @@ function fetchData(page) {
             console.log(response.results);
             console.log(response.results.length);
             handlePageButtons(response.next, response.previous);
-            displayResults(response.results);
+            displayPlanets(response.results);
         },
         error: function() {
             alert('Error loading planets data!');
@@ -41,26 +38,6 @@ function fetchData(page) {
 function handlePageButtons(next, previous) {
     var $next = $('#next');
     var $previous = $('#previous');
-    if ($previous.hasClass('disabled')) {
-        console.log('previous disabled');
-    } else {
-        console.log('previous enabled');
-    };
-        if ($next.hasClass('disabled')) {
-        console.log('next disabled');
-    } else {
-        console.log('next enabled');
-    };
-    if (next !== null) {
-        console.log('next ok');
-    } else {
-        console.log('next not ok');
-    };
-        if (previous !== null) {
-        console.log('previous ok');
-    } else {
-        console.log('previous not ok');
-    };
     if ($next.hasClass('disabled') && next !== null) {
         console.log('enabling next');
         $next.removeClass('disabled');
@@ -83,40 +60,98 @@ function handlePageButtons(next, previous) {
     };
 }
 
-function displayResults(planets) {
+function displayPlanets(planets) {
+    var residentURLs = {};
     for (i = 0; i < planets.length; i++) {
-    console.log(planets[i]);
-    let planet = planets[i];
-    let name = planet.name;
-    let diameter = Number(planet.diameter).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' km';
-    let climate = planet.climate;
-    let terrain = planet.terrain;
-    let surfaceWater = planet.surface_water;
-    if (surfaceWater !== 'unknown') {
-        surfaceWater = planet.surface_water + ' %';
+        console.log(planets[i]);
+        var planet = planets[i];
+        var name = planet.name;
+        if (planet.diameter !== 'unknown') {
+            var diameter = Number(planet.diameter).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' km';
+        } else {
+            var diameter = planet.diameter;
+        };
+        var climate = planet.climate;
+        var terrain = planet.terrain;
+        var surfaceWater = planet.surface_water;
+        if (surfaceWater !== 'unknown') {
+            surfaceWater = planet.surface_water + ' %';
+        };
+        if (planet.population !== 'unknown') {
+            var population = Number(planet.population).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' people';
+        } else {
+            var population = planet.population;
+        };
+        var residentsArray = planet.residents;
+        residentURLs[name] = residentsArray;
+        console.log('residentURLs ' + residentURLs);
+        switch(residentsArray.length) {
+            case 0: {
+                var residentsNumber = 'No known residents';
+                break;    
+            }
+            case 1: {
+                var residentsNumber = '<button id="' + name + '" type="button" data-toggle="modal" data-target="#residentsModal" class="btn btn-default resident">1 resident</button>';
+                break;
+            }
+            default: {
+                var residentsNumber = '<button id="' + name + '" type="button" data-toggle="modal" data-target="#residentsModal" class="btn btn-default resident">' + residentsArray.length + ' residents</button>'
+                break;    
+            }
+        };
+        $('#planets').append('<tr><td>' + name + '</td><td>' + diameter + '</td><td>' + climate + '</td><td>' + terrain + '</td><td>' + surfaceWater + '</td><td>' + population + '</td><td>' + residentsNumber + '</td></tr>');
     };
-    if (planet.population !== 'unknown') {
-        var population = Number(planet.population).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' people';
+    localStorage.setItem(residentURLs, residentURLs);
+    console.log(localStorage);
+    $('.resident').on('click', function() {
+        console.log(this.id);
+        console.log(name);
+        $('.modal-title').append('Residents of ' + this.id);
+        $('.close-modal').on('click', function() {
+            $('#residentsModal').modal('hide');
+            $('.modal-title').empty();
+            $('#residents').empty();
+        });
+        var planetName = this.id;
+        handleResidents(residentURLs[planetName]);
+    });
+}
+
+function handleResidents(residents) {
+    for (let i = 0; i < residents.length; i++) {
+        console.log(residents[i]);
+        handleResident(residents[i]);
+    }
+}
+
+function handleResident(url) {
+    $.ajax({
+        type: 'GET',
+        dataType: 'json',
+        url: url,
+        success: function(response) {
+            displayResident(response);
+        },
+        error: function() {
+            alert('Error loading planets data!');
+        } 
+    });
+}
+
+function displayResident(resident) {
+    var name = resident.name;
+    var height = resident.height + ' m';
+    if (resident.mass !== 'unknown') {
+        var mass = resident.mass + ' kg';
     } else {
-        var population = planet.population;
+        var mass = resident.mass;
     };
-    let residents = planet.residents;
-    switch(residents.length) {
-        case 0: {
-            residents = 'No known residents';
-            break;    
-        }
-        case 1: {
-            residents = '<button type="button" class="btn btn-default">1 resident</button>';
-            break;
-        }
-        default: {
-            residents = '<button type="button" class="btn btn-default">' + residents.length + ' residents</button>'
-            break;    
-        }
-    };
-    $('tbody').append('<tr><td>' + name + '</td><td>' + diameter + '</td><td>' + climate + '</td><td>' + terrain + '</td><td>' + surfaceWater + '</td><td>' + population + '</td><td>' + residents + '</td></tr>');
-    };
+    var skinColor = resident.skin_color;
+    var hairColor = resident.hair_color;
+    var eyeColor = resident.eye_color;
+    var birthYear = resident.birth_year;
+    var gender = resident.gender;
+    $('#residents').append('<tr><td>' + name + '</td><td>' + height + '</td><td>' + mass + '</td><td>' + skinColor + '</td><td>' + hairColor + '</td><td>' + eyeColor + '</td><td>' + birthYear + '</td><td>' + gender + '</td></tr>');
 }
 
 $(document).ready(main);

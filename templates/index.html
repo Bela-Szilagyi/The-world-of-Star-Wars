@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style/style.css') }}">
     <script src="https://code.jquery.com/jquery-1.12.4.js" defer></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" defer></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/js.js') }}" defer></script>
     
     <title>The World of Star Wars </title>
@@ -34,9 +35,42 @@
                 <th>Residents</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="planets">
         </tbody>
     </table>
+
+    <div id="residentsModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close close-modal">&times;</button>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Height</th>
+                                <th>Mass</th>
+                                <th>Skin color</th>
+                                <th>Hair color</th>
+                                <th>Eye color</th>
+                                <th>Birth year</th>
+                                <th>Gender</th>
+                            </tr>
+                        </thead>
+                        <tbody id="residents">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default close-modal" >Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
 
 </body>
 </html>
