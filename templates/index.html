@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style/style.css') }}">
+    <script src="https://code.jquery.com/jquery-1.12.4.js" defer></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/js.js') }}" defer></script>
+    
+    <title>The World of Star Wars </title>
+
+</head>
+
+<body>
+
+    <div class="page-header">
+      <h1>Star Wars<small> universe planets</small></h1>
+    </div>
+    <div class="btn-group" >
+        <button type="button" class="btn btn-default disabled">Previous</button>
+        <button type="button" class="btn btn-default">Next page</button>
+    </div>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Diameter</th>
+                <th>Climate</th>
+                <th>Terrain</th>
+                <th>Surface water</th>
+                <th>Population</th>
+                <th>Residents</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+</body>
+</html>
