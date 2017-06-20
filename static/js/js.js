@@ -142,7 +142,7 @@ function handleResident(url) {
 
 function displayResident(resident) {
     var name = resident.name;
-    var height = resident.height + ' m';
+    var height = (Number(resident.height)/100).toFixed(2) + ' m';
     if (resident.mass !== 'unknown') {
         var mass = resident.mass + ' kg';
     } else {
