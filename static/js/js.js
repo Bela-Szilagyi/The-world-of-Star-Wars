@@ -6,12 +6,14 @@ function main() {
         pageNumber++;
         console.log(pageNumber);
         $('#planets').empty(); 
+        handlePlanets(pageNumber);
     });
 
     $('#previous').on('click', function() {
         pageNumber--;
         console.log(pageNumber);
-        $('#planets').empty(); 
+        $('#planets').empty();
+        handlePlanets(pageNumber); 
     });
 }
 
