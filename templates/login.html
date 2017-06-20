@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style/style.css') }}">
+    <script src="https://code.jquery.com/jquery-1.12.4.js" defer></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" defer></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/js.js') }}" defer></script>
+    
+    <title>The World of Star Wars - Login</title>
+
+</head>
+
+<body>
+
+    <div class="page-header">
+        <h1>Login to Star Wars<small> universe planets</small></h1>
+    </div>
+
+<div class="container">
+    <div class="row">
+        <form role="form" method="post" action="/login/">
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label for="userame">Enter username</label>
+                    <input type="text" class="form-control" name="username" id="username" placeholder="username" required autofocus>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Enter password</label>
+                    <input type="text" class="form-control" id="password" name="password" placeholder="password" required>
+                </div>
+                <input type="submit" name="submit" id="submit" value="Login" class="btn btn-info pull-right">
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

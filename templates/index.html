@@ -16,15 +16,25 @@
 
 <body>
 
-    <div class="page-header">
-        <div class='btn-toolbar pull-right'>
-            <div class='btn-group'>
-                <button type='button' class='btn btn-primary'>Login</button>
-                <button type='button' class='btn btn-primary'>Register</button>
-            </div>
+    <nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <div class="navbar-header">
+        <h1 class="navbar">Star Wars<small> universe planets</small></h1>
         </div>
-        <h1>Star Wars<small> universe planets</small></h1>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav navbar-right">
+            {% if username|length > 0 %}
+                <li><h1><small>Logged in as </small><strong>{{ username }}</strong></h1></li>
+                <li><a href="/logout/"><button type='button' class='btn btn-primary'>Logout</button></a></li>
+            {% else %}
+                    <li><a href="/login/"><button type='button' class='btn btn-primary'>Login</button></a></li>
+                    <li><a href="/register/"><button type='button' class='btn btn-primary'>Register</button></a></li>
+            {% endif %}
+        </ul>
+        </div>
     </div>
+    </nav>
+
     <div class="btn-group" >
         <button type="button" class="btn btn-primary disabled" disabled id="previous">Previous</button>
         <button type="button" class="btn btn-primary" id="next">Next page</button>
