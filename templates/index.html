@@ -17,23 +17,25 @@
 <body>
 
     <nav class="navbar navbar-default">
-    <div class="container-fluid">
-        <div class="navbar-header">
-        <h1 class="navbar">Star Wars<small> universe planets</small></h1>
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <h1 class="navbar">Star Wars<small> universe planets</small></h1>
+                <button id="statistics" type='button' data-toggle='modal' data-target='#statisticsModal' class='btn btn-default navbar-btn'>Statistics</button>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    {% if username|length > 0 %}
+                        <li><button id="test" type='button' class='test btn btn-primary'>Test</button></li>
+                        <li><h1><small>Logged in as </small><strong>{{ username }}</strong></h1></li>
+                        <!-- <p class="navbar-text navbar-right">Signed in as ><strong>{{ username }}</strong></p> -->
+                        <li><a href="/logout/"><button type='button' class='btn btn-primary'>Logout</button></a></li>
+                    {% else %}
+                            <li><a href="/login/"><button type='button' class='btn btn-primary'>Login</button></a></li>
+                            <li><a href="/register/"><button type='button' class='btn btn-primary'>Register</button></a></li>
+                    {% endif %}
+                </ul>
+            </div>
         </div>
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-        <ul class="nav navbar-nav navbar-right">
-            {% if username|length > 0 %}
-                <li><button id="test" type='button' class='test btn btn-primary'>Test</button></li>
-                <li><h1><small>Logged in as </small><strong>{{ username }}</strong></h1></li>
-                <li><a href="/logout/"><button type='button' class='btn btn-primary'>Logout</button></a></li>
-            {% else %}
-                    <li><a href="/login/"><button type='button' class='btn btn-primary'>Login</button></a></li>
-                    <li><a href="/register/"><button type='button' class='btn btn-primary'>Register</button></a></li>
-            {% endif %}
-        </ul>
-        </div>
-    </div>
     </nav>
 
     <div class="btn-group" >
@@ -64,7 +66,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close close-modal">&times;</button>
-                    <h4 class="modal-title"></h4>
+                    <h4 class="modal-title" id="residents-modal-title" ></h4>
                 </div>
                 <div class="modal-body">
                     <table class="table table-bordered">
@@ -88,7 +90,32 @@
                     <button type="button" class="btn btn-default close-modal" >Close</button>
                 </div>
             </div>
+        </div>
+    </div>
 
+<div id="statisticsModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close close-modal">&times;</button>
+                    <h4 class="modal-title" id="statistics-modal-title"></h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Planet name</th>
+                                <th>Number of votes</th>
+                            </tr>
+                        </thead>
+                        <tbody id="votes">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default close-modal" >Close</button>
+                </div>
+            </div>
         </div>
     </div>
 

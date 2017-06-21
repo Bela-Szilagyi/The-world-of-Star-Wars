@@ -44,6 +44,34 @@ function main() {
             alert( "Vote failed :-(" + msg );
         });
     });
+
+    $('#statistics').on('click', function() {
+        $.post( '/statistics/', function(response) {
+        for (const property in response) {            
+            console.log(property + ' ' + response[property]);
+            debugger;
+            handleStatistics(property, response[property]);
+        }
+            alert( 'success ');
+            })
+            .done(function() {
+                alert( 'second success' );
+            })
+            .fail(function() {
+                alert( 'error' );
+            })
+            .always(function() {
+                alert( 'finished' );
+            });
+            
+ 
+        $('#statistics-modal-title').append('Statistics');
+        $('.close-modal').on('click', function() {
+            $('#statisticsModal').modal('hide');
+            $('#statistics-modal-title').empty();
+            $('#votes').empty();
+        });
+    });
 }
 
 function handlePlanets(page, cookie) {
@@ -144,10 +172,10 @@ function displayPlanets(planets, cookie) {
     $('.resident').on('click', function() {
         console.log(this.id);
         console.log(name);
-        $('.modal-title').append('Residents of ' + this.id);
+        $('#residents-modal-title').append('Residents of ' + this.id);
         $('.close-modal').on('click', function() {
             $('#residentsModal').modal('hide');
-            $('.modal-title').empty();
+            $('#residents-modal-title').empty();
             $('#residents').empty();
         });
         var planetName = this.id;
@@ -222,6 +250,25 @@ function getUserCookie(cookieName) {
         };
     };
     return result;  
+};
+
+function handleStatistics(planetId, numberOfVotes) {
+    $.ajax({
+    type: 'GET',
+    dataType: 'json',
+    url: 'http://swapi.co/api/planets/' + planetId,
+    success: function(response) {
+        var planet = response.name;
+        displayStatistics(planet, numberOfVotes)
+    },
+    error: function() {
+        alert('Error loading planets data!');
+    } 
+    });
+};
+
+function displayStatistics(planetName, votes) {
+    $('#votes').append('<tr><td>' + planetName + '</td><td>' + votes + '</td></tr>');                    
 };
 
 $(document).ready(main);

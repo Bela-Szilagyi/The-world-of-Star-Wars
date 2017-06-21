@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, redirect, session, url_for, escape, make_response
+from flask import Flask, render_template, request, redirect, session, url_for, \
+                  escape, make_response, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 import json
@@ -113,13 +114,28 @@ def vote():
     result = data_manager.handle_database(query)
     if result['result'] == 'success':
         swuser_id = result['rows'][0][0]
-    print(query)
-    print(swuser_id)
-
     query = "INSERT INTO planetvotes(planet_id, swuser_id, submission_time) \
                 VALUES ('{}', '{}', '{}')".format(voted_planet_id, swuser_id, str(datetime.now())[:-7])
-    data_manager.handle_database(query)
-    return redirect(url_for('index'))
+    result = data_manager.handle_database(query)
+    if result['result'] == 'success':
+        return redirect(url_for('index'))
+
+
+@app.route('/statistics/', methods=['POST'])
+def statistics():
+    query = "SELECT planet_id, count(planet_id) \
+             FROM planetvotes \
+             GROUP BY planet_id \
+             ORDER BY planet_id"
+    result = data_manager.handle_database(query)
+    if result['result'] == 'success':
+        statistics = {}
+        for row in result['rows']:
+            statistics[row[0]] = row[1]
+        print(statistics)
+        json_statistics = jsonify(statistics)
+        print(json_statistics)
+        return json_statistics
 
 
 if __name__ == '__main__':
