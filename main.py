@@ -1,13 +1,18 @@
-from flask import Flask, render_template, request, redirect, session, url_for, escape
+from flask import Flask, render_template, request, redirect, session, url_for, escape, make_response
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
+import json
 import data_manager
 
 app = Flask(__name__)
 
 
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
-
+'''
+import os
+os.urandom(24)
+'\xfd{H\xe5<\x95\xf9\xe3\x96.5\xd1\x01O<!\xd5\xa2\xa0\x9fR"\xa1\xa8'
+'''
 
 username = ''
 
@@ -16,7 +21,6 @@ username = ''
 def index():
     if 'username' in session:
         global username
-    print('username ' + username)
     return render_template('index.html', username=username)
 
 
@@ -46,16 +50,8 @@ def post_register():
                 return str(result)
         else:
             return 'username already in database'
-        '''
-        return render_template('result.html',
-                            title=title,
-                            column_names=result['column_names'], rows=result['rows'], row_count=result['row_count'])
-        '''
     else:
         return render_template('error.html', error=result['result'])
-    '''
-    return 'username: ' + request.form['username'] + ' password: ' + request.form['password']
-    '''
 
 
 @app.route('/login/', methods=['GET'])
@@ -83,21 +79,16 @@ def post_login():
                     session['username'] = username_to_login
                     global username
                     username = username_to_login
-                    return redirect(url_for('index'))
+                    redirection = redirect(url_for('index'))
+                    response = make_response(redirection)
+                    response.set_cookie("username", username)
+                    return response
                 else:
                     return 'authentification failed: ' + str(password) + ' ' + str(password_from_database)
         else:
             return 'username not registered'
-        '''
-        return render_template('result.html',
-                            title=title,
-                            column_names=result['column_names'], rows=result['rows'], row_count=result['row_count'])
-        '''
     else:
         return render_template('error.html', error=result['result'])
-    '''
-    return 'username: ' + request.form['username'] + ' password: ' + request.form['password']
-    '''
 
 
 @app.route('/logout/')
@@ -105,6 +96,29 @@ def logout():
     session.pop('username', None)
     global username
     username = ''
+    redirection = redirect(url_for('index'))
+    response = make_response(redirection)
+    response.set_cookie("username", expires=0)
+    return response
+
+
+@app.route('/vote/', methods=['POST'])
+def vote():
+    vote = request.json['vote']
+    voted_planet_id = json.loads(vote)['vote']
+    username = json.loads(vote)['username']
+    query = "SELECT id \
+            FROM swuser\
+            WHERE username = '{}'".format(username)
+    result = data_manager.handle_database(query)
+    if result['result'] == 'success':
+        swuser_id = result['rows'][0][0]
+    print(query)
+    print(swuser_id)
+
+    query = "INSERT INTO planetvotes(planet_id, swuser_id, submission_time) \
+                VALUES ('{}', '{}', '{}')".format(voted_planet_id, swuser_id, str(datetime.now())[:-7])
+    data_manager.handle_database(query)
     return redirect(url_for('index'))
 
 

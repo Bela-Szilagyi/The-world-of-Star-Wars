@@ -1,23 +1,52 @@
 function main() {
+    
+    // var test = '<img src="{{ url_for("static", filename="images/vote.png") }}" >';
+    // $('h1').append(test);
+    
+    var userCookie = getUserCookie('username');
+    console.log(userCookie);
+    if (userCookie) {
+        alert('logged in as ' + userCookie);
+    } else {
+        alert('logged out');
+    };
+
     var pageNumber = 1;
-    handlePlanets(pageNumber);
+    handlePlanets(pageNumber, userCookie);
 
     $('#next').on('click', function() {
         pageNumber++;
         console.log(pageNumber);
         $('#planets').empty(); 
-        handlePlanets(pageNumber);
+        handlePlanets(pageNumber, userCookie);
     });
 
     $('#previous').on('click', function() {
         pageNumber--;
         console.log(pageNumber);
         $('#planets').empty();
-        handlePlanets(pageNumber); 
+        handlePlanets(pageNumber, userCookie); 
+    });
+
+    $('.test').on('click', function() {
+        let data = JSON.stringify({planet:this.id});
+        console.log('!!!!!!!!!!data ' + data); 
+        $.ajax({
+            type : 'POST',
+            url : "/vote/",
+            contentType: 'application/json;charset=UTF-8',
+            data : JSON.stringify({data})
+        })
+        .done(function( msg ) {
+            alert( "You have voted successfully! " + msg );
+        })
+        .fail(function( msg ) {
+            alert( "Vote failed :-(" + msg );
+        });
     });
 }
 
-function handlePlanets(page) {
+function handlePlanets(page, cookie) {
     $.ajax({
         type: 'GET',
         dataType: 'json',
@@ -29,7 +58,7 @@ function handlePlanets(page) {
             console.log(response.results);
             console.log(response.results.length);
             handlePageButtons(response.next, response.previous);
-            displayPlanets(response.results);
+            displayPlanets(response.results, cookie);
         },
         error: function() {
             alert('Error loading planets data!');
@@ -62,11 +91,12 @@ function handlePageButtons(next, previous) {
     };
 }
 
-function displayPlanets(planets) {
+function displayPlanets(planets, cookie) {
     var residentURLs = {};
     for (i = 0; i < planets.length; i++) {
         console.log(planets[i]);
         var planet = planets[i];
+        var planetId = (planet.url).slice(28, -1);
         var name = planet.name;
         if (planet.diameter !== 'unknown') {
             var diameter = Number(planet.diameter).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' km';
@@ -101,7 +131,13 @@ function displayPlanets(planets) {
                 break;    
             }
         };
-        $('#planets').append('<tr><td>' + name + '</td><td>' + diameter + '</td><td>' + climate + '</td><td>' + terrain + '</td><td>' + surfaceWater + '</td><td>' + population + '</td><td>' + residentsNumber + '</td></tr>');
+        if (cookie) {
+            let imageTag = '<img src="/static/images/vote.png") class="vote" id="' + planetId + '" title="vote for ' + name + '" alt="vote" width="32" height="32">';
+            console.log(imageTag);
+            $('#planets').append('<tr><td>' + name + '</td><td>' + diameter + '</td><td>' + climate + '</td><td>' + terrain + '</td><td>' + surfaceWater + '</td><td>' + population + '</td><td>' + residentsNumber + '</td><td>' + imageTag + '</td></tr>');
+        } else {
+            $('#planets').append('<tr><td>' + name + '</td><td>' + diameter + '</td><td>' + climate + '</td><td>' + terrain + '</td><td>' + surfaceWater + '</td><td>' + population + '</td><td>' + residentsNumber + '</td></tr>');
+        };
     };
     localStorage.setItem(residentURLs, residentURLs);
     console.log(localStorage);
@@ -116,6 +152,23 @@ function displayPlanets(planets) {
         });
         var planetName = this.id;
         handleResidents(residentURLs[planetName]);
+    });
+    $('.vote').on('click', function() {
+        alert(this.id);
+        let vote = JSON.stringify({vote:this.id, username:cookie});
+        console.log('!!!!!!!!!!vote ' + vote); 
+        $.ajax({
+            type : 'POST',
+            url : "/vote/",
+            contentType: 'application/json;charset=UTF-8',
+            data : JSON.stringify({vote})
+        })
+        .done(function( msg ) {
+            alert( "You have voted successfully! " + msg );
+        })
+        .fail(function( msg ) {
+            alert( "Vote failed :-(" + msg );
+        });
     });
 }
 
@@ -155,5 +208,20 @@ function displayResident(resident) {
     var gender = resident.gender;
     $('#residents').append('<tr><td>' + name + '</td><td>' + height + '</td><td>' + mass + '</td><td>' + skinColor + '</td><td>' + hairColor + '</td><td>' + eyeColor + '</td><td>' + birthYear + '</td><td>' + gender + '</td></tr>');
 }
+
+function getUserCookie(cookieName) {
+    let allcookies = document.cookie;
+    var cookiearray = allcookies.split(';');
+    var result = false
+    for(let i = 0; i < cookiearray.length; i++) {
+        name = cookiearray[i].split('=')[0];
+        let value = cookiearray[i].split('=')[1];
+        if (name === cookieName) {
+            result = value;
+            break;
+        };
+    };
+    return result;  
+};
 
 $(document).ready(main);
