@@ -4,11 +4,14 @@ function main() {
     // $('h1').append(test);
     
     var userCookie = getUserCookie('username');
+
+    /*
     if (userCookie) {
         alert('logged in as ' + userCookie);
     } else {
         alert('logged out');
     };
+    */
 
     var pageNumber = 1;
     handlePlanets(pageNumber, userCookie);
@@ -34,32 +37,23 @@ function main() {
             data : JSON.stringify({data})
         })
         .done(function( msg ) {
-            alert( "You have voted successfully! " + msg );
+            alert( "You have voted successfully! ");
         })
         .fail(function( msg ) {
-            alert( "Vote failed :-(" + msg );
+            alert( "Vote failed :-(");
         });
     });
 
     $('#statistics').on('click', function() {
         $.post( '/statistics/', function(response) {
-        for (const property in response) {            
-            debugger;
-            handleStatistics(property, response[property]);
-        }
-            alert( 'success ');
-            })
-            .done(function() {
-                alert( 'second success' );
-            })
-            .fail(function() {
-                alert( 'error' );
-            })
-            .always(function() {
-                alert( 'finished' );
-            });
-            
- 
+            for (const property in response) {            
+                debugger;
+                handleStatistics(property, response[property]);
+            }
+        })
+        .fail(function() {
+            alert( 'Sorry, something went wrong :-(' );
+        }) 
         $('#statistics-modal-title').append('Statistics');
         $('.close-modal').on('click', function() {
             $('#statisticsModal').modal('hide');
@@ -162,7 +156,6 @@ function displayPlanets(planets, cookie) {
         handleResidents(residentURLs[planetName]);
     });
     $('.vote').on('click', function() {
-        alert(this.id);
         let vote = JSON.stringify({vote:this.id, username:cookie});
         $.ajax({
             type : 'POST',
