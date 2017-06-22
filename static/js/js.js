@@ -47,7 +47,6 @@ function main() {
     $('#statistics').on('click', function() {
         $.post( '/statistics/', function(response) {
             for (const property in response) {            
-                debugger;
                 handleStatistics(property, response[property]);
             }
         })
