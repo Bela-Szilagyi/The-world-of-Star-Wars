@@ -37,7 +37,7 @@ def get_register():
 def post_register():
     username_to_register = request.form['username']
     if request.form['password'] != request.form['confirm-password']:
-        flash('Password confirmation falied. Please re-password!')
+        flash('Password confirmation falied. Please re-enter password!')
         return render_template('register.html', username=username_to_register)
     query = "SELECT username \
              FROM swuser\
