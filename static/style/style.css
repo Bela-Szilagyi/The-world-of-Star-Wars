@@ -5,3 +5,10 @@
 .vote:hover {
     cursor: pointer;
 }
+
+h1 {
+font-weight: 500;
+line-height: 20px;
+margin-top: 0px; 
+-webkit-margin-before: 0px; 
+}

@@ -19,25 +19,22 @@
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="navbar-header">
-                <h1 class="navbar">Star Wars<small> universe planets</small></h1>
-                <button id="statistics" type='button' data-toggle='modal' data-target='#statisticsModal' class='btn btn-default navbar-btn'>Statistics</button>
+                <h1 class="navbar-brand">Star Wars<small> universe planets</small></h1>
             </div>
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-right">
-                    {% if username|length > 0 %}
-                        <li><button id="test" type='button' class='test btn btn-primary'>Test</button></li>
-                        <li><h1><small>Logged in as </small><strong>{{ username }}</strong></h1></li>
-                        <!-- <p class="navbar-text navbar-right">Signed in as ><strong>{{ username }}</strong></p> -->
-                        <li><a href="/logout/"><button type='button' class='btn btn-primary'>Logout</button></a></li>
-                    {% else %}
-                            <li><a href="/login/"><button type='button' class='btn btn-primary'>Login</button></a></li>
-                            <li><a href="/register/"><button type='button' class='btn btn-primary'>Register</button></a></li>
-                    {% endif %}
-                </ul>
-            </div>
+            <button id="statistics" data-toggle="modal" data-target="#statisticsModal" class="btn btn-default navbar-btn">Statistics</button>
+  
+            <ul class="nav navbar-nav navbar-right">
+                {% if username|length > 0 %}
+                    <li><h1><small>Logged in as </small><strong>{{ username }}</strong></h1></li>
+                    <li><a href="/logout/">Logout</a></li>
+                {% else %}
+                    <li><a href="/login/">Login</a></li>
+                    <li><a href="/register/">Register</a></li>
+                {% endif %}
+            </ul>
         </div>
     </nav>
-
+  
     <div class="btn-group" >
         <button type="button" class="btn btn-primary disabled" disabled id="previous">Previous</button>
         <button type="button" class="btn btn-primary" id="next">Next page</button>
