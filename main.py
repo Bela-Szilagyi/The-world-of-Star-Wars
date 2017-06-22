@@ -132,9 +132,7 @@ def statistics():
         statistics = {}
         for row in result['rows']:
             statistics[row[0]] = row[1]
-        print(statistics)
         json_statistics = jsonify(statistics)
-        print(json_statistics)
         return json_statistics
 
 
