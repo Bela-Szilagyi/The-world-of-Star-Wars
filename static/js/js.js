@@ -1,8 +1,5 @@
 function main() {
-    
-    // var test = '<img src="{{ url_for("static", filename="images/vote.png") }}" >';
-    // $('h1').append(test);
-    
+        
     var userCookie = getUserCookie('username');
 
     /*
@@ -26,22 +23,6 @@ function main() {
         pageNumber--;
         $('#planets').empty();
         handlePlanets(pageNumber, userCookie); 
-    });
-
-    $('.test').on('click', function() {
-        let data = JSON.stringify({planet:this.id});
-        $.ajax({
-            type : 'POST',
-            url : "/vote/",
-            contentType: 'application/json;charset=UTF-8',
-            data : JSON.stringify({data})
-        })
-        .done(function( msg ) {
-            alert( "You have voted successfully! ");
-        })
-        .fail(function( msg ) {
-            alert( "Vote failed :-(");
-        });
     });
 
     $('#statistics').on('click', function() {
@@ -137,11 +118,12 @@ function displayPlanets(planets, cookie) {
             }
         };
         if (cookie) {
-            let imageTag = '<img src="/static/images/vote.png") class="vote" id="' + planetId + '" title="vote for ' + name + '" alt="vote" width="32" height="32">';
+            let imageTag = '<img src="static/images/vote.png" class="vote" id="' + planetId + '" title="vote for ' + name + '" alt="vote" width="32" height="32">';
             $('#planets').append('<tr><td>' + name + '</td><td>' + diameter + '</td><td>' + climate + '</td><td>' + terrain + '</td><td>' + surfaceWater + '</td><td>' + population + '</td><td>' + residentsNumber + '</td><td>' + imageTag + '</td></tr>');
         } else {
             $('#planets').append('<tr><td>' + name + '</td><td>' + diameter + '</td><td>' + climate + '</td><td>' + terrain + '</td><td>' + surfaceWater + '</td><td>' + population + '</td><td>' + residentsNumber + '</td></tr>');
         };
+        
     };
     localStorage.setItem(residentURLs, residentURLs);
     $('.resident').on('click', function() {
@@ -163,7 +145,7 @@ function displayPlanets(planets, cookie) {
             data : JSON.stringify({vote})
         })
         .done(function( msg ) {
-            alert( "You have voted successfully! " + msg );
+            alert( "You have voted successfully! ");
         })
         .fail(function( msg ) {
             alert( "Vote failed :-(" + msg );
