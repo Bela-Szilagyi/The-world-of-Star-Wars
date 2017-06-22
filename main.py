@@ -1,15 +1,18 @@
 from flask import Flask, render_template, request, redirect, session, url_for, \
-                  escape, make_response, jsonify
+                  escape, make_response, jsonify, flash
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 import json
 import data_manager
+import os
 
 app = Flask(__name__)
 
 
-app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
+app.secret_key = os.urandom(24)
+# app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 '''
+
 import os
 os.urandom(24)
 '\xfd{H\xe5<\x95\xf9\xe3\x96.5\xd1\x01O<!\xd5\xa2\xa0\x9fR"\xa1\xa8'
@@ -27,12 +30,15 @@ def index():
 
 @app.route('/register/', methods=['GET'])
 def get_register():
-    return render_template('register.html')
+    return render_template('register.html', username='')
 
 
 @app.route('/register/', methods=['POST'])
 def post_register():
     username_to_register = request.form['username']
+    if request.form['password'] != request.form['confirm-password']:
+        flash('Password confirmation falied. Please re-password!')
+        return render_template('register.html', username=username_to_register)
     query = "SELECT username \
              FROM swuser\
              WHERE username = '{}'".format(username_to_register)

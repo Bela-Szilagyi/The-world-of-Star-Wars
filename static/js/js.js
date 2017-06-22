@@ -1,5 +1,5 @@
 function main() {
-        
+
     var userCookie = getUserCookie('username');
 
     /*
