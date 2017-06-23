@@ -142,5 +142,15 @@ def statistics():
         return json_statistics
 
 
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('error.html', error=e), 404
+
+
+@app.errorhandler(500)
+def internal_server(e):
+    return render_template('error.html', error=e), 500
+
+
 if __name__ == '__main__':
     app.run(debug=True)

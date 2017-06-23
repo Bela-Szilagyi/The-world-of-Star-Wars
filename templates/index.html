@@ -25,11 +25,11 @@
   
             <ul class="nav navbar-nav navbar-right">
                 {% if username|length > 0 %}
-                    <li><h1 class="navbar-brand"><small>Logged in as </small><strong>{{ username }}</strong></h1></li>
-                    <li><a href="/logout/">Logout</a></li>
+                    <li><h1 class="navbar-brand"><small><span class="glyphicon glyphicon-user"></span> Logged in as </small><strong>{{ username }}</strong></h1></li>
+                    <li><a href="/logout/"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
                 {% else %}
-                    <li><a href="/login/">Login</a></li>
-                    <li><a href="/register/">Register</a></li>
+                    <li><a href="/login/"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                    <li><a href="/register/"><span class="glyphicon glyphicon-plus"></span> Sign in</a></li>
                 {% endif %}
             </ul>
         </div>
@@ -39,6 +39,7 @@
         <button type="button" class="btn btn-primary disabled" disabled id="previous">Previous</button>
         <button type="button" class="btn btn-primary" id="next">Next page</button>
     </div>
+    
     <table class="table table-bordered">
         <thead>
             <tr>

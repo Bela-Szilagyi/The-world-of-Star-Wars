@@ -122,8 +122,9 @@ function displayPlanets(planets, cookie) {
             }
         };
         if (cookie) {
-            let imageTag = '<img src="static/images/vote.png" class="vote" id="' + planetId + '" title="vote for ' + name + '" alt="vote" width="32" height="32">';
-            $('#planets').append('<tr><td>' + name + '</td><td>' + diameter + '</td><td>' + climate + '</td><td>' + terrain + '</td><td>' + surfaceWater + '</td><td>' + population + '</td><td>' + residentsNumber + '</td><td>' + imageTag + '</td></tr>');
+            // let voteIcon = '<img src="static/images/vote.png" class="vote" id="' + planetId + '" title="vote for ' + name + '" alt="vote" width="32" height="32">';
+            let voteIcon = '<td class="vote" id="' + planetId + '" title="vote for ' + name + '" ><span class="glyphicon glyphicon-ok"></span></td>';
+            $('#planets').append('<tr><td>' + name + '</td><td>' + diameter + '</td><td>' + climate + '</td><td>' + terrain + '</td><td>' + surfaceWater + '</td><td>' + population + '</td><td>' + residentsNumber + '</td>' + voteIcon + '</tr>');
         } else {
             $('#planets').append('<tr><td>' + name + '</td><td>' + diameter + '</td><td>' + climate + '</td><td>' + terrain + '</td><td>' + surfaceWater + '</td><td>' + population + '</td><td>' + residentsNumber + '</td></tr>');
         };
