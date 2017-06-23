@@ -27,8 +27,9 @@ function main() {
 
     $('#statistics').on('click', function() {
         $.post( '/statistics/', function(response) {
-            for (const property in response) {            
-                handleStatistics(property, response[property]);
+            debugger;
+            for( let i = 0; i < response.length; i++) {
+                displayStatistics(response[i][0], response[i][1]);
             }
         })
         .fail(function() {
@@ -207,21 +208,6 @@ function getUserCookie(cookieName) {
         };
     };
     return result;  
-};
-
-function handleStatistics(planetId, numberOfVotes) {
-    $.ajax({
-    type: 'GET',
-    dataType: 'json',
-    url: 'http://swapi.co/api/planets/' + planetId,
-    success: function(response) {
-        var planet = response.name;
-        displayStatistics(planet, numberOfVotes)
-    },
-    error: function() {
-        alert('Error loading planets data!');
-    } 
-    });
 };
 
 function displayStatistics(planetName, votes) {

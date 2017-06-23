@@ -5,6 +5,7 @@ from datetime import datetime
 import json
 import data_manager
 import os
+import requests
 
 app = Flask(__name__)
 
@@ -135,11 +136,22 @@ def statistics():
              ORDER BY planet_id"
     result = data_manager.handle_database(query)
     if result['result'] == 'success':
-        statistics = {}
+        statistics = []
         for row in result['rows']:
-            statistics[row[0]] = row[1]
+            planet_name = get_planet_name(row[0])
+            statistics.append([planet_name, row[1]])
+        statistics.sort()
         json_statistics = jsonify(statistics)
         return json_statistics
+
+
+def get_planet_name(planet_id):
+    response = requests.get('http://swapi.co/api/planets/' + str(planet_id))
+
+    print(response.status_code)
+
+    data = response.json()
+    return data['name']
 
 
 @app.errorhandler(404)
