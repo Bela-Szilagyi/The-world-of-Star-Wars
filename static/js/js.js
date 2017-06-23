@@ -26,11 +26,13 @@ function main() {
     });
 
     $('#statistics').on('click', function() {
+        $(this).html('Loading...');
         $.post( '/statistics/', function(response) {
-            debugger;
             for( let i = 0; i < response.length; i++) {
                 displayStatistics(response[i][0], response[i][1]);
             }
+        $('#statistics').html('Statistics');
+        $("#statisticsModal").modal();
         })
         .fail(function() {
             alert( 'Sorry, something went wrong :-(' );
