@@ -39,8 +39,12 @@ function main() {
             $('#statisticsModal').modal('hide');
             $('#statistics-modal-title').empty();
             $('#votes').empty();
+            $('#statisticsModal').on('hidden.bs.modal', function () {
+                $("#statistics").blur();        
+            });
         });
     });
+
 }
 
 function handlePlanets(page, cookie) {
