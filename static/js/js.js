@@ -153,7 +153,7 @@ function displayPlanets(planets, cookie) {
             alert("You have voted successfully!");
         })
         .fail(function( msg ) {
-            alert("Vote failed :-(");
+            alert("Vote failed :-( Try again!");
         });
     });
 }

@@ -122,13 +122,17 @@ def vote():
             FROM swuser\
             WHERE username = '{}'".format(username)
     result = data_manager.handle_database(query)
-    if result['result'] == 'success':
+    if result['result'] != 'success':
+        return render_template('error.html', error='Error handling your vote. Try to vote again!')
+    else:
         swuser_id = result['rows'][0][0]
-    query = "INSERT INTO planetvotes(planet_id, swuser_id, submission_time) \
-                VALUES ('{}', '{}', '{}')".format(voted_planet_id, swuser_id, str(datetime.now())[:-7])
-    result = data_manager.handle_database(query)
-    if result['result'] == 'success':
-        return redirect(url_for('index'))
+        query = "INSERT INTO planetvotes(planet_id, swuser_id, submission_time) \
+                    VALUES ('{}', '{}', '{}')".format(voted_planet_id, swuser_id, str(datetime.now())[:-7])
+        result = data_manager.handle_database(query)
+        if result['result'] != 'success':
+            return render_template('error.html', error='Error handling your vote. Try to vote again!')
+        else:
+            return redirect(url_for('index'))
 
 
 @app.route('/statistics/', methods=['POST'])
@@ -146,15 +150,17 @@ def statistics():
         statistics.sort()
         json_statistics = jsonify(statistics)
         return json_statistics
+    else:
+        return render_template('error.html', error='Error handling statistics. Try again!')
 
 
 def get_planet_name(planet_id):
     response = requests.get('http://swapi.co/api/planets/' + str(planet_id))
-
-    print(response.status_code)
-
-    data = response.json()
-    return data['name']
+    if response.status_code == 200:
+        data = response.json()
+        return data['name']
+    else:
+        return render_template('error.html', error='Error handling statistics. Try again!')
 
 
 @app.errorhandler(404)
