@@ -16,20 +16,3 @@ line-height: 20px;
 margin-top: 0px; 
 -webkit-margin-before: 0px; 
 }
-
-#go-back {
-    background-color: #F7D08A;
-    border: none;
-    color: #5B5941;
-    padding: 10px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    float: right;
-    
-}
-
-#go-back:hover {
-    background-color: #E3F09B;
-    cursor: pointer;
-}
