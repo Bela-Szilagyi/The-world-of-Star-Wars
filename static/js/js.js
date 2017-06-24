@@ -122,7 +122,7 @@ function displayPlanets(planets, cookie) {
             }
         };
         if (cookie) {
-            let voteIcon = '<td class="vote" id="' + planetId + '" title="vote for ' + name + '" ><span class="glyphicon glyphicon-ok"></span></td>';
+            let voteIcon = '<td class="vote text-center" id="' + planetId + '" title="vote for ' + name + '" ><span class="glyphicon glyphicon-ok"></span></td>';
             $('#planets').append('<tr><td>' + name + '</td><td>' + diameter + '</td><td>' + climate + '</td><td>' + terrain + '</td><td>' + surfaceWater + '</td><td>' + population + '</td><td>' + residentsNumber + '</td>' + voteIcon + '</tr>');
         } else {
             $('#planets').append('<tr><td>' + name + '</td><td>' + diameter + '</td><td>' + climate + '</td><td>' + terrain + '</td><td>' + surfaceWater + '</td><td>' + population + '</td><td>' + residentsNumber + '</td></tr>');
