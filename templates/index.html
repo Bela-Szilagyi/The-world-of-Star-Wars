@@ -21,9 +21,7 @@
             <div class="navbar-header">
                 <h1 class="navbar-brand">Star Wars<small> universe planets</small></h1>
             </div>
-            <button id="statistics"  class="btn btn-default navbar-btn">Statistics</button>
-            <!-- <button id="statistics" data-toggle="modal" data-target="#statisticsModal" class="btn btn-default navbar-btn">Statistics</button> -->
-  
+                <button id="statistics"  class="btn btn-default navbar-btn">Statistics</button>
             <ul class="nav navbar-nav navbar-right">
                 {% if username|length > 0 %}
                     <li><h1 class="navbar-brand"><small><span class="glyphicon glyphicon-user"></span> Logged in as </small><strong>{{ username }}</strong></h1></li>
@@ -92,7 +90,7 @@
         </div>
     </div>
 
-<div id="statisticsModal" class="modal fade" role="dialog">
+    <div id="statisticsModal" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">

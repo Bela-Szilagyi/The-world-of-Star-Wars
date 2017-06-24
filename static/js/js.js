@@ -31,14 +31,14 @@ function main() {
         $.post( '/statistics/', function(response) {
             for( let i = 0; i < response.length; i++) {
                 displayStatistics(response[i][0], response[i][1]);
-            }
+            };
         $('#statistics').removeAttr('disabled');
         $('#statistics').html('Statistics');
         $("#statisticsModal").modal();
         })
         .fail(function() {
             alert( 'Sorry, something went wrong :-(' );
-        }) 
+        });
         $('#statistics-modal-title').append('Statistics');
         $('.close-modal').on('click', function() {
             closeStatisticsMOdal();
@@ -122,13 +122,11 @@ function displayPlanets(planets, cookie) {
             }
         };
         if (cookie) {
-            // let voteIcon = '<img src="static/images/vote.png" class="vote" id="' + planetId + '" title="vote for ' + name + '" alt="vote" width="32" height="32">';
             let voteIcon = '<td class="vote" id="' + planetId + '" title="vote for ' + name + '" ><span class="glyphicon glyphicon-ok"></span></td>';
             $('#planets').append('<tr><td>' + name + '</td><td>' + diameter + '</td><td>' + climate + '</td><td>' + terrain + '</td><td>' + surfaceWater + '</td><td>' + population + '</td><td>' + residentsNumber + '</td>' + voteIcon + '</tr>');
         } else {
             $('#planets').append('<tr><td>' + name + '</td><td>' + diameter + '</td><td>' + climate + '</td><td>' + terrain + '</td><td>' + surfaceWater + '</td><td>' + population + '</td><td>' + residentsNumber + '</td></tr>');
-        };
-        
+        };        
     };
     localStorage.setItem(residentURLs, residentURLs);
     $('.resident').on('click', function() {
@@ -197,7 +195,7 @@ function displayResident(resident) {
 function getUserCookie(cookieName) {
     let allcookies = document.cookie;
     var cookiearray = allcookies.split(';');
-    var result = false
+    var result = false;
     for(let i = 0; i < cookiearray.length; i++) {
         name = cookiearray[i].split('=')[0];
         let value = cookiearray[i].split('=')[1];
@@ -207,11 +205,11 @@ function getUserCookie(cookieName) {
         };
     };
     return result;  
-};
+}
 
 function displayStatistics(planetName, votes) {
     $('#votes').append('<tr><td>' + planetName + '</td><td>' + votes + '</td></tr>');                    
-};
+}
 
 function closeStatisticsMOdal() {
     $('#statisticsModal').modal('hide');
@@ -220,6 +218,6 @@ function closeStatisticsMOdal() {
     $('#statisticsModal').on('hidden.bs.modal', function () {
         $("#statistics").blur();        
     });
-};
+}
 
 $(document).ready(main);

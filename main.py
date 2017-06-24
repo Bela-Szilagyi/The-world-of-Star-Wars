@@ -31,10 +31,11 @@ def get_register():
 @app.route('/register/', methods=['POST'])
 def post_register():
     username_to_register = request.form['username']
-    query = "SELECT username \
-             FROM swuser\
-             WHERE username = '{}'".format(username_to_register)
-    result = data_manager.handle_database(query)
+    text = 'SELECT username \
+            FROM swuser\
+            WHERE username = %s;'
+    data = (username_to_register, )
+    result = data_manager.handle_database(text, data)
     if result['result'] == 'success':
         if result['row_count'] == 0:
             if request.form['password'] != request.form['confirm-password']:
@@ -42,16 +43,21 @@ def post_register():
                 return render_template('register.html', username=username_to_register)
             else:
                 password = generate_password_hash(request.form['password'])
-                query = "INSERT INTO swuser(username, password) \
-                        VALUES ('{}', '{}')".format(username_to_register, password)
-                data_manager.handle_database(query)
-                query = "SELECT username \
-                        FROM swuser\
-                        WHERE username = '{}'".format(username_to_register)
-                result = data_manager.handle_database(query)
+                text = "INSERT INTO swuser(username, password) \
+                        VALUES(%s, %s)"
+                data = (username_to_register, password)
+                result = data_manager.handle_database(text, data)
                 if result['result'] == 'success':
-                    info = True
-                    return render_template('register.html', info=info)
+                    text = "SELECT username \
+                            FROM swuser\
+                            WHERE username = %s"
+                    data = (username_to_register, )
+                    result = data_manager.handle_database(text, data)
+                    if result['result'] == 'success':
+                        info = True
+                        return render_template('register.html', info=info)
+                    else:
+                        return render_template('error.html', error=result['result'])
                 else:
                     return render_template('error.html', error=result['result'])
         else:
@@ -69,17 +75,19 @@ def get_login():
 @app.route('/login/', methods=['POST'])
 def post_login():
     username_to_login = request.form['username']
-    query = "SELECT username \
+    text = "SELECT username \
              FROM swuser\
-             WHERE username = '{}'".format(username_to_login)
-    result = data_manager.handle_database(query)
+             WHERE username = %s"
+    data = (username_to_login, )
+    result = data_manager.handle_database(text, data)
     if result['result'] == 'success':
         if result['row_count'] != 0:
             password = request.form['password']
-            query = "SELECT password \
+            text = "SELECT password \
                     FROM swuser \
-                    WHERE username = '{}'".format(username_to_login)
-            result = data_manager.handle_database(query)
+                    WHERE username = %s"
+            data = (username_to_login, )
+            result = data_manager.handle_database(text, data)
             if result['result'] == 'success':
                 password_from_database = result['rows'][0][0]
                 if check_password_hash(password_from_database, password):
@@ -118,17 +126,19 @@ def vote():
     vote = request.json['vote']
     voted_planet_id = json.loads(vote)['vote']
     username = json.loads(vote)['username']
-    query = "SELECT id \
+    text = "SELECT id \
             FROM swuser\
-            WHERE username = '{}'".format(username)
-    result = data_manager.handle_database(query)
+            WHERE username = %s"
+    data = (username, )
+    result = data_manager.handle_database(text, data)
     if result['result'] != 'success':
         return render_template('error.html', error='Error handling your vote. Try to vote again!')
     else:
         swuser_id = result['rows'][0][0]
-        query = "INSERT INTO planetvotes(planet_id, swuser_id, submission_time) \
-                    VALUES ('{}', '{}', '{}')".format(voted_planet_id, swuser_id, str(datetime.now())[:-7])
-        result = data_manager.handle_database(query)
+        text = "INSERT INTO planetvotes(planet_id, swuser_id, submission_time) \
+                    VALUES (%s, %s, %s)"
+        data = (voted_planet_id, swuser_id, str(datetime.now())[:-7])
+        result = data_manager.handle_database(text, data)
         if result['result'] != 'success':
             return render_template('error.html', error='Error handling your vote. Try to vote again!')
         else:
@@ -137,11 +147,12 @@ def vote():
 
 @app.route('/statistics/', methods=['POST'])
 def statistics():
-    query = "SELECT planet_id, count(planet_id) \
-             FROM planetvotes \
-             GROUP BY planet_id \
-             ORDER BY planet_id"
-    result = data_manager.handle_database(query)
+    text = "SELECT planet_id, count(planet_id) \
+            FROM planetvotes \
+            GROUP BY planet_id \
+            ORDER BY planet_id"
+    data = None
+    result = data_manager.handle_database(text, data)
     if result['result'] == 'success':
         statistics = []
         for row in result['rows']:

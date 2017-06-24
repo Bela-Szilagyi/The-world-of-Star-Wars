@@ -1,7 +1,7 @@
 import psycopg2
 
 
-def handle_database(command):
+def handle_database(query_text, query_data):
     result = {}
     connect_str = "dbname='en' user='en' host='localhost'"
     connection = init_db(connect_str)
@@ -12,8 +12,9 @@ def handle_database(command):
         try:
             connection.autocommit = True
             cursor = connection.cursor()
-            cursor.execute(command)
-            if "SELECT" in command:
+            query = cursor.mogrify(query_text, query_data)
+            cursor.execute(query)
+            if "SELECT" in query_text:
                 result['rows'] = cursor.fetchall()
                 result['row_count'] = cursor.rowcount
             cursor.close()
