@@ -101,11 +101,9 @@ def post_login():
                 else:
                     flash('Authentification failed. Try to login again!')
                     return redirect(url_for('get_login'))
-                    # return 'authentification failed: ' + str(password) + ' ' + str(password_from_database)
         else:
             flash('Username not registered. Try to login again!')
             return redirect(url_for('get_login'))
-            # return 'username not registered'
     else:
         return render_template('error.html', error=result['result'])
 

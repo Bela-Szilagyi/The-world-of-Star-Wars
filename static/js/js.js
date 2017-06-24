@@ -2,14 +2,6 @@ function main() {
 
     var userCookie = getUserCookie('username');
 
-    /*
-    if (userCookie) {
-        alert('logged in as ' + userCookie);
-    } else {
-        alert('logged out');
-    };
-    */
-
     var pageNumber = 1;
     handlePlanets(pageNumber, userCookie);
 
