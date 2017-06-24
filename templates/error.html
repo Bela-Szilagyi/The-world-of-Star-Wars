@@ -4,16 +4,20 @@
 
 <head>
     <title> Error </title>
-    <link rel="stylesheet" type="text/css" href="/static/style.css">
+    <!-- <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style/style.css') }}"> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
 </head>
 
 <body>
 
     <h1> Ooops...something went wrong: </h1>
-    <h2> {{ error }} </h2>
-
-    <p><a class="button" onclick="goBack()" >Go Back!</a></p>
-
+    <br>
+    <h4> {{ error }} </h4>
+    <br>
+    <!-- <p><a id="go-back" onclick="goBack()">Go Back!</a></p> -->
+    <button type="button" class="btn btn-primary" id="go-back" onclick="goBack()">Go Back!</button>
+    
     <script>
 		function goBack() 
             {

@@ -2,6 +2,17 @@
     margin-top: 10px;
 }
 
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+     vertical-align: middle;
+}
+
 .vote:hover {
     cursor: pointer;
+}
+
+h1 {
+font-weight: 500;
+line-height: 20px;
+margin-top: 0px; 
+-webkit-margin-before: 0px; 
 }
