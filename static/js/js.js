@@ -41,10 +41,9 @@ function main() {
         });
         $('#statistics-modal-title').append('Statistics');
         $('.close-modal').on('click', function() {
-            closeStatisticsMOdal();
+            closeStatisticsModal();
         });
     });
-
 }
 
 function handlePlanets(page, cookie) {
@@ -113,11 +112,11 @@ function displayPlanets(planets, cookie) {
                 break;    
             }
             case 1: {
-                var residentsNumber = '<button id="' + name + '" type="button" data-toggle="modal" data-target="#residentsModal" class="btn btn-default resident">1 resident</button>';
+                var residentsNumber = '<button id="' + name + '" class="btn btn-default resident">1 resident</button>';
                 break;
             }
             default: {
-                var residentsNumber = '<button id="' + name + '" type="button" data-toggle="modal" data-target="#residentsModal" class="btn btn-default resident">' + residentsArray.length + ' residents</button>'
+                var residentsNumber = '<button id="' + name + '" class="btn btn-default resident">' + residentsArray.length + ' residents</button>'
                 break;    
             }
         };
@@ -130,6 +129,7 @@ function displayPlanets(planets, cookie) {
     };
     localStorage.setItem(residentURLs, residentURLs);
     $('.resident').on('click', function() {
+        $('#residentsModal').modal();
         $('#residents-modal-title').append('Residents of ' + this.id);
         $('.close-modal').on('click', function() {
             $('#residentsModal').modal('hide');
@@ -211,7 +211,7 @@ function displayStatistics(planetName, votes) {
     $('#votes').append('<tr><td>' + planetName + '</td><td>' + votes + '</td></tr>');                    
 }
 
-function closeStatisticsMOdal() {
+function closeStatisticsModal() {
     $('#statisticsModal').modal('hide');
     $('#statistics-modal-title').empty();
     $('#votes').empty();
