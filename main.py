@@ -91,9 +91,13 @@ def post_login():
                     response.set_cookie("username", username)
                     return response
                 else:
-                    return 'authentification failed: ' + str(password) + ' ' + str(password_from_database)
+                    flash('Authentification failed. Try to login again!')
+                    return redirect(url_for('get_login'))
+                    # return 'authentification failed: ' + str(password) + ' ' + str(password_from_database)
         else:
-            return 'username not registered'
+            flash('Username not registered. Try to login again!')
+            return redirect(url_for('get_login'))
+            # return 'username not registered'
     else:
         return render_template('error.html', error=result['result'])
 

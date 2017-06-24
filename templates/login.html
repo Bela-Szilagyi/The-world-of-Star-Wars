@@ -33,6 +33,19 @@
                         <label for="password">Enter password</label>
                         <input type="password" class="form-control" id="password" name="password" placeholder="password" required>
                     </div>
+                    {% with messages = get_flashed_messages() %}
+                            {% if messages %}
+                                <ul class=flashes>
+                                {% for message in messages %}
+                                <div class="alert alert-warning alert-dismissable" role="alert" >
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <strong>{{ message }}!</strong>
+                                </div>
+                        
+                                {% endfor %}
+                                </ul>
+                            {% endif %}
+                        {% endwith %}
                     <input type="submit" name="submit" id="submit" value="Login" class="btn btn-info pull-right">
                 </div>
             </form>
