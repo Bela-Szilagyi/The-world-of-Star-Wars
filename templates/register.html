@@ -20,6 +20,23 @@
         <h1>Register to Star Wars<small> universe planets</small></h1>
     </div>
 
+    <div class="infomodal"  data-toggle="infomodal" data-target="#infomodal" role="dialog">
+        {% if info %}
+            <div id="infomodal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4>Registraton successful!</h4>
+                        </div>
+                        <div class="modal-body text-center">
+                            <a href="/login/" class="btn btn-info close-modal" role="button">Login</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
 <div class="container">
     <div class="row">
         <form role="form" method="post" action="/register/">

@@ -26,11 +26,13 @@ function main() {
     });
 
     $('#statistics').on('click', function() {
+        $(this).attr('disabled', true);
         $(this).html('Loading...');
         $.post( '/statistics/', function(response) {
             for( let i = 0; i < response.length; i++) {
                 displayStatistics(response[i][0], response[i][1]);
             }
+        $('#statistics').removeAttr('disabled');
         $('#statistics').html('Statistics');
         $("#statisticsModal").modal();
         })
@@ -39,12 +41,7 @@ function main() {
         }) 
         $('#statistics-modal-title').append('Statistics');
         $('.close-modal').on('click', function() {
-            $('#statisticsModal').modal('hide');
-            $('#statistics-modal-title').empty();
-            $('#votes').empty();
-            $('#statisticsModal').on('hidden.bs.modal', function () {
-                $("#statistics").blur();        
-            });
+            closeStatisticsMOdal();
         });
     });
 
@@ -153,10 +150,10 @@ function displayPlanets(planets, cookie) {
             data : JSON.stringify({vote})
         })
         .done(function( msg ) {
-            alert( "You have voted successfully! ");
+            alert("You have voted successfully!");
         })
         .fail(function( msg ) {
-            alert( "Vote failed :-(" + msg );
+            alert("Vote failed :-(");
         });
     });
 }
@@ -214,6 +211,15 @@ function getUserCookie(cookieName) {
 
 function displayStatistics(planetName, votes) {
     $('#votes').append('<tr><td>' + planetName + '</td><td>' + votes + '</td></tr>');                    
+};
+
+function closeStatisticsMOdal() {
+    $('#statisticsModal').modal('hide');
+    $('#statistics-modal-title').empty();
+    $('#votes').empty();
+    $('#statisticsModal').on('hidden.bs.modal', function () {
+        $("#statistics").blur();        
+    });
 };
 
 $(document).ready(main);

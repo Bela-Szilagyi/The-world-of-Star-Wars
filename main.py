@@ -11,13 +11,7 @@ app = Flask(__name__)
 
 
 app.secret_key = os.urandom(24)
-# app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
-'''
 
-import os
-os.urandom(24)
-'\xfd{H\xe5<\x95\xf9\xe3\x96.5\xd1\x01O<!\xd5\xa2\xa0\x9fR"\xa1\xa8'
-'''
 
 username = ''
 
@@ -37,27 +31,32 @@ def get_register():
 @app.route('/register/', methods=['POST'])
 def post_register():
     username_to_register = request.form['username']
-    if request.form['password'] != request.form['confirm-password']:
-        flash('Password confirmation falied. Please re-enter password!')
-        return render_template('register.html', username=username_to_register)
     query = "SELECT username \
              FROM swuser\
              WHERE username = '{}'".format(username_to_register)
     result = data_manager.handle_database(query)
     if result['result'] == 'success':
         if result['row_count'] == 0:
-            password = generate_password_hash(request.form['password'])
-            query = "INSERT INTO swuser(username, password) \
-                     VALUES ('{}', '{}')".format(username_to_register, password)
-            data_manager.handle_database(query)
-            query = "SELECT username \
-                    FROM swuser\
-                    WHERE username = '{}'".format(username_to_register)
-            result = data_manager.handle_database(query)
-            if result['result'] == 'success':
-                return str(result)
+            if request.form['password'] != request.form['confirm-password']:
+                flash('Password confirmation falied. Please re-enter password!')
+                return render_template('register.html', username=username_to_register)
+            else:
+                password = generate_password_hash(request.form['password'])
+                query = "INSERT INTO swuser(username, password) \
+                        VALUES ('{}', '{}')".format(username_to_register, password)
+                data_manager.handle_database(query)
+                query = "SELECT username \
+                        FROM swuser\
+                        WHERE username = '{}'".format(username_to_register)
+                result = data_manager.handle_database(query)
+                if result['result'] == 'success':
+                    info = True
+                    return render_template('register.html', info=info)
+                else:
+                    return render_template('error.html', error=result['result'])
         else:
-            return 'username already in database'
+            flash('Username already in database! Choose another username')
+            return redirect(url_for('get_register'))
     else:
         return render_template('error.html', error=result['result'])
 

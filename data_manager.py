@@ -15,13 +15,11 @@ def handle_database(command):
             cursor.execute(command)
             if "SELECT" in command:
                 result['rows'] = cursor.fetchall()
-                # result['column_names'] = [desc[0] for desc in cursor.description]
                 result['row_count'] = cursor.rowcount
             cursor.close()
             result['result'] = 'success'
         except Exception as e:
             result['result'] = e
-            print(e)
         finally:
             return result
 
@@ -32,5 +30,4 @@ def init_db(connection_data):
         conn = psycopg2.connect(connection_data)
         return conn
     except Exception as e:
-        print(e)
         return 'connection error'
