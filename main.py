@@ -18,6 +18,9 @@ username = ''
 
 @app.route('/')
 def index():
+    if 'username' in request.cookies:
+        username = request.cookies['username']
+        global username
     if 'username' in session:
         global username
     return render_template('index.html', username=username)
